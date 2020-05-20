@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  loadSelectedFeature: string = 'shopping-list';
+  loadSelectedFeature: string = 'recipe';
 
   // Header Navigation 
   onNavigate(featureSelected: string) {
