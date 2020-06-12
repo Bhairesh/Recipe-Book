@@ -4,9 +4,10 @@
   </div>
 
   <div class="col-md-6">
-    <app-recipe-details *ngIf="selectedRecipeDetails; else recipeNotSelected" [selectedRecipeDeails]="selectedRecipeDetails"></app-recipe-details>
+    <!-- <app-recipe-details *ngIf="selectedRecipeDetails; else recipeNotSelected" [selectedRecipeDeails]="selectedRecipeDetails"></app-recipe-details>
     <ng-template #recipeNotSelected>
       Please select a recipe!
-    </ng-template>
+    </ng-template> -->
+    <router-outlet></router-outlet>
   </div>
 </div>

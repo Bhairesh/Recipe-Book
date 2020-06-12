@@ -25,6 +25,18 @@ export class RecipeService {
                 new Ingredient('sauce', 1),
                 new Ingredient('tomato', 3),
             ]),
+        new Recipe('Vanilla Mug Cake',
+            'Vanilla makes everything tastes to much better, isn’t it? Add some of it to coffee, muffins or cakes, and the flavour just reaches a whole new level. But it is a hero flavour with a beautiful fragrance that stands out on it own. So if you too, like us, are a vanilla fan, this is just the recipe for you. Give this vanilla mug cake a shot today (you can thank us later!).',
+            'assets/images/recipe-3.jpg',
+            [
+                new Ingredient('Melted butter', 2),
+                new Ingredient('Milk', 1),
+                new Ingredient('Vanilla extract', 0.5),
+                new Ingredient('Egg yolk', 1),
+                new Ingredient('Sugar', 2),
+                new Ingredient('maida', 4),
+                new Ingredient('Baking powder', 1)
+            ]),
     ];
 
     constructor(private shoppingListService: ShoppingListService) { }
@@ -37,5 +49,8 @@ export class RecipeService {
         this.shoppingListService.addIngredients(ingredients);
     }
 
+    getRecipe(index: number) {
+        return this.recipes[index];
+    }
 
 }
