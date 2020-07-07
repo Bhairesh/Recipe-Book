@@ -1,11 +1,14 @@
-
 <a style="cursor: pointer; margin-bottom: 3px; margin-top: 3px;" class="list-group-item clearfix mb-3"
   [routerLink]="[index]" [routerLinkActive]="['active']">
-  <div class="pull-left">
-    <h4 class="list-group-item-heading">{{recipe.name}}</h4>
-    <p class="list-group-item-text">{{recipe.description}}</p>
+
+  <div class="row">
+    <div class="col-xs-4 text-center">
+      <img [src]="recipe.imagePath" [alt]="recipe.name" style="min-height: 50px;min-width: 50px;"
+        class="img-responsive rounded">
+    </div>
+    <div class="col-xs-8 text-justify">
+      <h4 class="list-group-item-heading">{{recipe.name}}</h4>
+      <p class="list-group-item-text">{{recipe.description}}</p>
+    </div>
   </div>
-  <span class="pull-right">
-    <img [src]="recipe.imagePath" [alt]="recipe.name" style="max-height: 50px;" class="img-responsive">
-  </span>
 </a>

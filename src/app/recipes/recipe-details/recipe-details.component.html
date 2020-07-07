@@ -1,8 +1,8 @@
 <br>
 <div class="row">
   <div class="col-md-12">
-    <img [src]="selectedRecipeDeails.imagePath" [alt]="selectedRecipeDeails.name" style="max-height: 400px;"
-      class="img-responsive">
+    <img [src]="selectedRecipeDeails.imagePath" [alt]="selectedRecipeDeails.name" style="max-width: 450px;"
+      class="img-responsive rounded">
   </div>
 </div>
 
@@ -23,7 +23,7 @@
       <ul class="dropdown-menu">
         <li><a style="cursor: pointer;" (click)="addToShoppingList()">To Shopping List</a></li>
         <li><a style="cursor: pointer;" (click)="onEditRecipe()"> Edit Recipe</a></li>
-        <li><a style="cursor: pointer;">Delete Recipe</a></li>
+        <li><a style="cursor: pointer;" (click)="onDeleteRecipe()">Delete Recipe</a></li>
       </ul>
     </div>
   </div>
@@ -36,7 +36,7 @@
 </div>
 <div class="row">
   <div class="col-xs-12">
-    <label for="list-group">Ingredients:</label>
+    <label for="list-group" *ngIf="selectedRecipeDeails.ingredients.length != 0">Ingredients:</label>
     <ul class="list-group">
       <li class="list-group-item" *ngFor="let ingredient of selectedRecipeDeails.ingredients">{{ingredient.name}}</li>
     </ul>
