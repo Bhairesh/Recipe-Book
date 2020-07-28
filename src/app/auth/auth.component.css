@@ -1,0 +1,21 @@
+.container {
+    margin-top: 5%;
+    max-width: 375px;
+  }
+  
+  .alignCenter {
+    width: 100%;
+    max-width: 350px;
+    margin: auto;
+    height: auto;
+  }
+  
+  .help-block {
+    color: red;
+    font-size: 75%;
+  }
+  
+  input.ng-invalid.ng-touched,
+  select.ng-invalid.ng-touched {
+    border: 1px solid red;
+  }
