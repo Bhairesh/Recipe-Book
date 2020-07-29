@@ -1,6 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { AuthResponseData } from "../services/auth.service";
 import { AuthService } from "../services/auth.service";
+import { Observable } from "rxjs";
+import { User } from "../models/user.model";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-auth",
@@ -13,7 +17,7 @@ export class AuthComponent implements OnInit {
   isLoading: boolean = false;
   error: any = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -28,26 +32,38 @@ export class AuthComponent implements OnInit {
   }
 
   onFormSubmit() {
-    console.log(this.loginForm);
     console.log(this.loginForm.value);
-
     if (this.loginForm.valid) {
       this.isLoading = true;
+      let userInfo = {
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password,
+      };
+      let authObs = new Observable<AuthResponseData>();
+
       if (this.isLoginMode) {
-      } else {
-        this.authService.register(this.loginForm.value).subscribe(
-          (res) => {
-            console.log(res);
-            this.isLoading = false;
-          },
-          (errMsg) => {
-            this.isLoading = false;
-            this.error = errMsg;
-            console.log(errMsg);
-          }
+        authObs = this.authService.login(
+          userInfo,
+          this.loginForm.value.returnSecureToken
         );
+      } else {
+        authObs = this.authService.register(userInfo);
       }
+
+      authObs.subscribe(
+        (res) => {
+          console.log(res);
+          this.isLoading = false;
+          this.router.navigate(["/recipes"]);
+        },
+        (errMsg) => {
+          this.isLoading = false;
+          this.error = errMsg;
+        }
+      );
     }
-    this.loginForm.reset();
+    // this.loginForm.reset();
   }
+
+  forgotPassword() {}
 }
