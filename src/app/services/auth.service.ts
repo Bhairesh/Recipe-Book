@@ -5,9 +5,10 @@ import {
   HttpErrorResponse,
 } from "@angular/common/http";
 import { catchError, tap } from "rxjs/operators";
-import { throwError, Subject } from "rxjs";
+import { throwError, BehaviorSubject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { User } from "../models/user.model";
+import { Router } from "@angular/router";
 
 export interface AuthResponseData {
   idToken: string; //	A Firebase Auth ID token for the newly created user.
@@ -22,9 +23,10 @@ export interface AuthResponseData {
   providedIn: "root",
 })
 export class AuthService {
-  user = new Subject<User>();
+  user = new BehaviorSubject<User>(null);
+  private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   register(userInfo: any) {
     return this.http
@@ -68,6 +70,32 @@ export class AuthService {
       );
   }
 
+  autoLogin() {
+    let userData: {
+      email: string;
+      id: string;
+      _token: string;
+      _expiresIn: string;
+    } = JSON.parse(localStorage.getItem("userData"));
+    if (!userData) {
+      return;
+    }
+
+    const loadedUser = new User(
+      userData.email,
+      userData.id,
+      userData._token,
+      new Date(userData._expiresIn)
+    );
+
+    if (loadedUser.token) {
+      this.user.next(loadedUser);
+      const expirationDuration =
+        new Date(userData._expiresIn).getTime() - new Date().getTime();
+      this.autoLogout(expirationDuration);
+    }
+  }
+
   handleAuthentication(
     email: string,
     id: string,
@@ -77,6 +105,8 @@ export class AuthService {
     let expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     let user = new User(email, id, token, expirationDate);
     this.user.next(user);
+    this.autoLogout(expiresIn * 1000);
+    localStorage.setItem("userData", JSON.stringify(user));
   }
 
   handleError(errRes: HttpErrorResponse) {
@@ -110,6 +140,23 @@ export class AuthService {
     }
 
     return throwError(errMessage);
+  }
+
+  logout() {
+    this.user.next(null);
+    this.router.navigate(["/auth"]);
+    localStorage.removeItem("userData");
+    if (this.tokenExpirationTimer) {
+      clearInterval(this.tokenExpirationTimer);
+    }
+    this.tokenExpirationTimer = null;
+  }
+
+  autoLogout(expirationDuration: number) {
+    console.log(expirationDuration);
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
   }
 
   changePassword() {

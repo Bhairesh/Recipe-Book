@@ -42,5 +42,9 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
     this.dataStorageService.fetchData().subscribe();
   }
 
+  onLogout() {
+    this.authSevice.logout();
+  }
+
   ngOnDestroy() {}
 }
