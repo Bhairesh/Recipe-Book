@@ -8,7 +8,6 @@ import { RecipeResolverService } from "../services/recipe-resolver.service";
 import { NgModule } from "@angular/core";
 
 const routes: Routes = [
-  { path: "", redirectTo: "recipes", pathMatch: "full" },
   {
     path: "recipes",
     component: RecipesComponent,
