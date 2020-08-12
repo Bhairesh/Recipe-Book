@@ -1,23 +1,39 @@
-import { Component, OnInit } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ComponentFactoryResolver,
+  ViewChild,
+  OnDestroy,
+} from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthResponseData } from "../services/auth.service";
 import { AuthService } from "../services/auth.service";
-import { Observable } from "rxjs";
-import { User } from "../models/user.model";
+import { Observable, Subscription } from "rxjs";
 import { Router } from "@angular/router";
+import { AlertBoxComponent } from "../shared/alert-box/alert-box.component";
+import { PlaceholderDirective } from "../shared/placeholder/placeholder.directive";
 
 @Component({
   selector: "app-auth",
   templateUrl: "./auth.component.html",
   styleUrls: ["./auth.component.css"],
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   isLoginMode: boolean = true;
   isLoading: boolean = false;
   error: any = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  private closeSub: Subscription;
+
+  @ViewChild(PlaceholderDirective, { static: false })
+  alertHost: PlaceholderDirective;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private componentFactoryResolver: ComponentFactoryResolver
+  ) {}
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -25,6 +41,12 @@ export class AuthComponent implements OnInit {
       email: new FormControl(null, [Validators.email]),
       password: new FormControl(null),
     });
+  }
+
+  ngOnDestroy() {
+    if (this.closeSub) {
+      this.closeSub.unsubscribe();
+    }
   }
 
   onSwitchMode() {
@@ -59,10 +81,29 @@ export class AuthComponent implements OnInit {
         (errMsg) => {
           this.isLoading = false;
           this.error = errMsg;
+          this.showErrorAlert(errMsg);
         }
       );
     }
     // this.loginForm.reset();
+  }
+
+  private showErrorAlert(message: string) {
+    const alertComponentFactory = this.componentFactoryResolver.resolveComponentFactory(
+      AlertBoxComponent
+    );
+
+    const hostViewContainerRef = this.alertHost.viewContainerRef;
+    hostViewContainerRef.clear();
+
+    const componentRef = hostViewContainerRef.createComponent(
+      alertComponentFactory
+    );
+    componentRef.instance.message = message;
+    this.closeSub = componentRef.instance.close.subscribe(() => {
+      this.closeSub.unsubscribe();
+      hostViewContainerRef.clear();
+    });
   }
 
   forgotPassword() {}

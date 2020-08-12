@@ -5,37 +5,32 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 
 import { AppComponent } from "./app.component";
 import { AppHeaderComponent } from "./header/app-header.component";
-import { RecipeStartComponent } from "./recipes/recipe-start/recipe-start.component";
-import { RecipeDetailsComponent } from "./recipes/recipe-details/recipe-details.component";
-import { RecipeListComponent } from "./recipes/recipe-list/recipe-list.component";
-import { RecipeItemComponent } from "./recipes/recipe-item/recipe-item.component";
 import { ShoppingListComponent } from "./shopping-list/shopping-list.component";
 import { ShoppingListEditComponent } from "./shopping-list/shopping-list-edit/shopping-list-edit.component";
 import { RecipesComponent } from "./recipes/recipes.component";
 import { DropdownDirective } from "./shared/dropdown.directive";
 import { ShoppingListService } from "./shopping-list/shopping-list.service";
 import { AppRoutingModule } from "./app-routing.module";
-import { RecipeEditComponent } from "./recipes/recipe-edit/recipe-edit.component";
 import { RecipeService } from "./recipes/recipe.service";
 import { AuthComponent } from "./auth/auth.component";
 import { LoadingSpinnerComponent } from "./shared/loading-spinner/loading-spinner.component";
 import { AuthInterceptorService } from "./shared/interceptor/auth-interceptor.service";
+import { AlertBoxComponent } from "./shared/alert-box/alert-box.component";
+import { PlaceholderDirective } from "./shared/placeholder/placeholder.directive";
+import { RecipesModule } from './recipes/recipes.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     AppHeaderComponent,
-    RecipeDetailsComponent,
-    RecipeListComponent,
-    RecipeItemComponent,
     ShoppingListComponent,
     ShoppingListEditComponent,
     RecipesComponent,
     DropdownDirective,
-    RecipeStartComponent,
-    RecipeEditComponent,
     AuthComponent,
     LoadingSpinnerComponent,
+    AlertBoxComponent,
+    PlaceholderDirective,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +38,7 @@ import { AuthInterceptorService } from "./shared/interceptor/auth-interceptor.se
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
+    RecipesModule
   ],
   providers: [
     ShoppingListService,
@@ -54,5 +50,6 @@ import { AuthInterceptorService } from "./shared/interceptor/auth-interceptor.se
     },
   ],
   bootstrap: [AppComponent],
+  entryComponents: [AlertBoxComponent],
 })
 export class AppModule {}
