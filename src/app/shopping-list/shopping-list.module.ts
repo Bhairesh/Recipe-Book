@@ -10,7 +10,6 @@ import { SharedModule } from "../shared/shared.module";
   imports: [
     SharedModule,
     FormsModule,
-    RouterModule,
     RouterModule.forChild([
       {
         path: "shopping-list",
