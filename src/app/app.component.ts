@@ -7,12 +7,6 @@ import { AuthService } from "./services/auth.service";
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit {
-  // loadSelectedFeature: string = 'recipe';
-  // // Header Navigation
-  // onNavigate(featureSelected: string) {
-  //   this.loadSelectedFeature = featureSelected;
-  // }
-
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
