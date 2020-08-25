@@ -16,6 +16,7 @@ import { AuthService } from "../services/auth.service";
 export class AppHeaderComponent implements OnInit, OnDestroy {
   @Output() featureSelected = new EventEmitter<string>();
   isAuthenticated: boolean = false;
+  isExpandNav: boolean = false;
 
   constructor(
     private dataStorageService: DataStorageService,
@@ -44,6 +45,10 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
 
   onLogout() {
     this.authSevice.logout();
+  }
+
+  expandNav() {
+    this.isExpandNav = !this.isExpandNav;
   }
 
   ngOnDestroy() {}
